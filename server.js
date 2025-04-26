@@ -10,6 +10,7 @@ import Student from "./models/studentModel.js";
 import Blog from "./models/blogs.js";
 // In your index.js (or the main server file)
 import { ScholarshipModel } from './models/userModel.js'; // Ensure correct path
+import questionRoutes from './routes/collegeRoutes.js';
 
 
 
@@ -27,6 +28,7 @@ app.use(cors());
 // ✅ Routes
 app.use("/api/colleges", collegeRoutes);
 app.use("/api/students", studentRoutes); // ✅ Use student routes
+app.use('/api', questionRoutes);
 
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
