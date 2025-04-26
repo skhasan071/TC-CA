@@ -14,6 +14,7 @@ import { filterCollegesByStream } from "../controllers/filterByStream.js";
 import { filterCollegesByRanking } from "../controllers/filterByRanking.js";
 import { predictColleges } from "../controllers/collegePredictorController.js";
 import {search} from "../controllers/searchController.js";
+import{ addQuestion, getQuestionsByCollege } from '../controllers/QAController.js';
 
 
 // User Authentication Controllers
@@ -49,6 +50,8 @@ router.put("/update/:collegeId", updateCollege);
 //filter
 router.post("/filter", filterColleges);
 
+router.get('/questions/:collegeId', getQuestionsByCollege);
+router.post('/add-question', addQuestion);
 
 // ✅ Courses & Fees Routes
 router.post("/courses/add", addCourse);
