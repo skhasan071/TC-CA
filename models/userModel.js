@@ -48,7 +48,6 @@ const scholarshipCollectionSchema = new mongoose.Schema({
 });
 
 
-
 const filterbyrank = new mongoose.Schema(
   {
     name: { type: String, required: true },

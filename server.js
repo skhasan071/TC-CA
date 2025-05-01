@@ -12,8 +12,6 @@ import Blog from "./models/blogs.js";
 import { ScholarshipModel } from './models/userModel.js'; // Ensure correct path
 import questionRoutes from './routes/collegeRoutes.js';
 
-
-
 dotenv.config();
 connectDB();
 
@@ -24,7 +22,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
-
 // ✅ Routes
 app.use("/api/colleges", collegeRoutes);
 app.use("/api/students", studentRoutes); // ✅ Use student routes
@@ -33,8 +30,8 @@ app.use('/api', questionRoutes);
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
-  // Endpoint to handle Google authentication
-  app.post("/auth/google-auth", async (req, res) => {
+// Endpoint to handle Google authentication
+app.post("/auth/google-auth", async (req, res) => {
     const { email, name } = req.body;
 
     try {
@@ -58,18 +55,18 @@ app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
     } catch (error) {
       return res.status(400).json({ message: "Invalid Access Token", error: error.message });
     }
-  });
-  const Tclient = twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
+});
 
-  // In-memory store (use Redis or DB in production)
-  const otpStore = new Map();
-  
-  function generateOTP() {
+const Tclient = twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
+
+// In-memory store (use Redis or DB in production)
+const otpStore = new Map();
+function generateOTP() {
     return Math.floor(100000 + Math.random() * 900000).toString();
-  }
-  
-  // Send OTP
-  app.post('/send-otp', async (req, res) => {
+}
+
+// Send OTP
+app.post('/send-otp', async (req, res) => {
     const { phone } = req.body;
     const otp = generateOTP();
   
@@ -85,10 +82,10 @@ app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
     } catch (err) {
       res.status(500).json({ success: false, message: err.message });
     }
-  });
+});
   
-  // Verify OTP
-  app.post('/verify-otp', (req, res) => {
+// Verify OTP
+app.post('/verify-otp', (req, res) => {
     const { phone, otp } = req.body;
     const record = otpStore.get(phone);
   
@@ -107,7 +104,7 @@ app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
     }
   
     res.status(400).json({ success: false, message: 'Invalid OTP' });
-  });
+});
 
 // Blog Routes
 app.post('/api/blogs', async (req, res) => {
@@ -148,6 +145,7 @@ app.get('/api/blogs', async (req, res) => {
     res.status(500).json({ message: 'Error fetching blogs', error });
   }
 });
+
 app.get('/api/scholarships/:collegeId', async (req, res) => {
   try {
     const collegeId = req.params.collegeId;

@@ -14,7 +14,7 @@ const CollegeSchema = new mongoose.Schema({
     acceptanceRate:{type: String, required: true},
     image: { type: String, required: true },
     collegeInfo: { type: String, required: true },
-    
+    feeRange: {type:String, required:true},
     stream: { 
         type: String, 
         required: true, 

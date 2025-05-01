@@ -28,15 +28,16 @@ export const addColleges = async (req, res) => {
     const collegeInfo = body.collegeinfo || body.collegeInfo;
     const stream = body.stream;
     const type = body.type; // ✅ Added type field
+    const feeRange = body.feeRange;
 
     // ✅ Extract file URLs from `req.files`
     const image = req.files?.image ? req.files.image[0].path : null;
     const brochure = req.files?.brochure ? req.files.brochure[0].path : null;
 
     // ✅ Validate all required fields
-    if (!name || !state || !city || !ranking || !collegeInfo || !image || !lat || !long ||!brochure || !stream || !country || !type || !naacGrade || !acceptanceRate || !estYear) {
+    if (!name || !state || !city || !ranking || !collegeInfo || !image || !lat || !long ||!brochure || !stream || !country || !type || !naacGrade || !acceptanceRate || !estYear || !feeRange) {
       return res.status(400).json({
-        message: "All fields (name, city, state, country, ranking, collegeInfo, image, brochure,lat,long, stream, type, estYear, naacGrade, acceptanceRate ) are required",
+        message: "All fields (name, city, state, country, ranking, collegeInfo, image, brochure,lat,long, stream, type, estYear, naacGrade, acceptanceRate, Fee Range ) are required",
       });
     }
 
@@ -61,7 +62,8 @@ export const addColleges = async (req, res) => {
       type,
       estYear,
       naacGrade,
-      acceptanceRate // ✅ Added type field
+      acceptanceRate, // ✅ Added type field
+      feeRange
     });
 
     await newCollege.save();
@@ -101,7 +103,7 @@ export const updateCollege = async (req, res) => {
       return res.status(400).json({ message: "Invalid College ID format" });
     }
 
-    const { name, city, state, country, ranking, collegeInfo, stream, type,lat,long } = req.body;
+    const { name, city, state, country, ranking, collegeInfo, stream, type,lat,long, feeRange } = req.body;
 
     // ✅ Validate type (if provided)
     if (type && !["Private", "Government"].includes(type)) {
@@ -115,7 +117,7 @@ export const updateCollege = async (req, res) => {
     // ✅ Update the college (only update provided fields)
     const updatedCollege = await College.findByIdAndUpdate(
       collegeId, 
-      { name, state, city, ranking, collegeInfo, lat,long,estYear, naacGrade, acceptanceRate, stream, type, ...(image && { image }), ...(brochure && { brochure }) }, 
+      { name, state, city, ranking, collegeInfo, lat,long,estYear, naacGrade, acceptanceRate, stream, feeRange, type, ...(image && { image }), ...(brochure && { brochure }) }, 
       { new: true, runValidators: true }
     );
 
