@@ -19,16 +19,16 @@ export const addColleges = async (req, res) => {
     const city = body.city;
     const state = body.state;
     const country = body.country;
-    const estYear=body.estYear;
+    const estYear=body.estyear;
     const lat=body.lat;
     const long=body.long;
-    const naacGrade=body.naacGrade;
-    const acceptanceRate=body.acceptanceRate;
+    const naacGrade=body.naacgrade;
+    const acceptanceRate=body.acceptancerate;
     const ranking = body.ranking;
     const collegeInfo = body.collegeinfo || body.collegeInfo;
     const stream = body.stream;
     const type = body.type; // ✅ Added type field
-    const feeRange = body.feeRange;
+    const feeRange = body.feerange;
 
     // ✅ Extract file URLs from `req.files`
     const image = req.files?.image ? req.files.image[0].path : null;
@@ -36,6 +36,7 @@ export const addColleges = async (req, res) => {
 
     // ✅ Validate all required fields
     if (!name || !state || !city || !ranking || !collegeInfo || !image || !lat || !long ||!brochure || !stream || !country || !type || !naacGrade || !acceptanceRate || !estYear || !feeRange) {
+      console.log(`Missing fields ${name + state + city + ranking + collegeInfo + image+ lat+long+ brochure+ stream+ country+ type+ naacGrade+ acceptanceRate+ estYear+ feeRange}`);
       return res.status(400).json({
         message: "All fields (name, city, state, country, ranking, collegeInfo, image, brochure,lat,long, stream, type, estYear, naacGrade, acceptanceRate, Fee Range ) are required",
       });
@@ -43,6 +44,7 @@ export const addColleges = async (req, res) => {
 
     // ✅ Validate type (should be either Private or Government)
     if (!["Private", "Government"].includes(type)) {
+      console.log("Type should be either 'Private' or 'Government'")
       return res.status(400).json({ message: "Type should be either 'Private' or 'Government'" });
     }
 

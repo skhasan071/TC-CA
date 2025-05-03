@@ -15,6 +15,7 @@ const validateCollege = (req, res, next) => {
   const ranking = body.ranking;
   const collegeInfo = body.collegeinfo || body.collegeInfo;
   const stream = body.stream; 
+  const naacGrade = body.naacgrade;
 
   // ✅ Extract file paths correctly
   const image = req.files?.image ? req.files.image[0].path : null;
@@ -31,8 +32,10 @@ const validateCollege = (req, res, next) => {
   if (!image) missingFields.push("image");
   if (!brochure) missingFields.push("brochure");
   if (!stream) missingFields.push("stream");
+  if (!naacGrade) missingFields.push('naacGrade');
 
   if (missingFields.length > 0) {
+    console.log(`The following required fields are missing: ${missingFields.join(", ")}`);
     return res.status(400).json({
       message: `The following required fields are missing: ${missingFields.join(", ")}`,
     });
@@ -41,6 +44,7 @@ const validateCollege = (req, res, next) => {
   // ✅ Validate stream values (added "Management")
   const validStreams = ["Engineering", "Medical", "Law", "Graduation", "Management"];
   if (!validStreams.includes(stream)) {
+    console.log(`Invalid stream. Allowed values: ${validStreams.join(", ")}`);
     return res.status(400).json({ message: `Invalid stream. Allowed values: ${validStreams.join(", ")}` });
   }
 

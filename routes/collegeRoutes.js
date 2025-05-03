@@ -15,6 +15,8 @@ import { filterCollegesByRanking } from "../controllers/filterByRanking.js";
 import { predictColleges } from "../controllers/collegePredictorController.js";
 import {search} from "../controllers/searchController.js";
 import{ addQuestion, getQuestionsByCollege } from '../controllers/QAController.js';
+import { reportIssue } from '../controllers/reportController.js';
+import { feedbackSubmit } from '../controllers/feedbackController.js';
 
 
 // User Authentication Controllers
@@ -101,6 +103,9 @@ router.post("/reviews", reviewsValidate, reviewdetails);
 router.get("/reviews/getAll/:uid", getReviews);
 router.post("/cutoffs", cutoffsValidate, cutoffdetails);
 router.post("/scholarships", scholarshipsValidate, scholarshipdetails);
+
+router.post('/report', reportIssue);
+router.post('/feedback', feedbackSubmit);
 
 
 export default router;

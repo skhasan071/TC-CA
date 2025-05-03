@@ -5,10 +5,10 @@ import mongoose from "mongoose";
 // ✅ Add Course API
 export const addCourse = async (req, res) => {
     try {
-        const { collegeId, courseName, duration, fees, examType, category, rankType, maxRankOrPercentile } = req.body;
+        const { collegeId, courses } = req.body;
 
-        if (!["Rank", "Percentile"].includes(rankType)) {
-            return res.status(400).json({ message: "Invalid rankType. Must be 'Rank' or 'Percentile'." });
+        if (!Array.isArray(courses) || courses.length === 0) {
+            return res.status(400).json({ message: "Courses must be a non-empty array." });
         }
 
         const college = await College.findById(collegeId);
@@ -16,23 +16,50 @@ export const addCourse = async (req, res) => {
             return res.status(404).json({ message: "College not found" });
         }
 
-        const newCourse = new Course({
-            collegeId,
-            courseName,
-            duration,
-            fees,
-            examType,
-            category,
-            rankType,
-            maxRankOrPercentile
-        });
+        const savedCourses = [];
 
-        await newCourse.save();
-        res.status(201).json({ message: "Course added successfully", course: newCourse });
+        for (const courseData of courses) {
+            const {
+                courseName,
+                duration,
+                fees,
+                examType,
+                category,
+                rankType,
+                maxRankOrPercentile
+            } = courseData;
+
+            // Validate required fields
+            if (!courseName || !duration || !fees || !examType || !category || !rankType || maxRankOrPercentile === undefined) {
+                return res.status(400).json({ message: "Missing required fields in one of the courses." });
+            }
+
+            if (!["Rank", "Percentile"].includes(rankType)) {
+                return res.status(400).json({ message: `Invalid rankType in one of the courses. Must be 'Rank' or 'Percentile'.` });
+            }
+
+            const newCourse = new Course({
+                collegeId,
+                courseName,
+                duration,
+                fees,
+                examType,
+                category,
+                rankType,
+                maxRankOrPercentile
+            });
+
+            const savedCourse = await newCourse.save();
+            savedCourses.push(savedCourse);
+        }
+
+        res.status(201).json({ message: "Courses added successfully", courses: savedCourses });
     } catch (error) {
+        console.error(error);
         res.status(500).json({ message: "Server Error", error: error.message });
     }
 };
+
 
 // ✅ Get Courses by College API
 export const getCoursesByCollege = async (req, res) => {
