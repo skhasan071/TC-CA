@@ -1,3 +1,4 @@
+studentController.js
 import Student from "../models/studentModel.js";
 import mongoose from "mongoose";
 
@@ -8,7 +9,6 @@ import jwt from "jsonwebtoken";
 const getUserFromToken = (req) => {
     const authHeader = req.headers["authorization"];
     if (!authHeader || !authHeader.startsWith("Bearer ")) return null;
-
     const token = authHeader.split(" ")[1]; // This removes the "Bearer " part
     try {
         return jwt.verify(token, process.env.SECRET);
@@ -26,31 +26,19 @@ export const addOrUpdateStudent = async (req, res) => {
             return res.status(403).json({ message: "Unauthorized. Please log in." });
         }
 
-        const { mobileNumber, studyingIn, city, passedIn, gender, dob } = req.body;
+        const { name, mobileNumber, studyingIn, city, passedIn } = req.body;
         let image = req.file ? req.file.path : null;
 
         // ✅ Validate required fields
-        if (!mobileNumber || !studyingIn || !city || !passedIn) {
+        if (!mobileNumber || !studyingIn || !city || !passedIn|| !name ) {
             return res.status(400).json({ message: "All required fields must be provided." });
         }
 
-        const mobileRegex = /^[6-9]\d{9}$/;
+        const mobileRegex = '/^[6-9]\d{9}$/';
         if (!mobileRegex.test(mobileNumber)) {
             return res.status(400).json({ message: "Invalid mobile number format." });
         }
 
-        if(gender){
-            const validGenders = ["Male", "Female", "Other"];
-        if (!validGenders.includes(gender)) {
-            return res.status(400).json({ message: "Invalid gender. Allowed values: Male, Female, Other" });
-        }}
-
-        if(dob){
-            const parsedDob = new Date(dob);
-        if (isNaN(parsedDob)) {
-            return res.status(400).json({ message: "Invalid date format for DOB" });
-        }
-        }
 
         // ✅ Check if student profile exists for this user
         let student = await Student.findOne({ email: user.email });
@@ -59,9 +47,8 @@ export const addOrUpdateStudent = async (req, res) => {
             // ✅ Update existing student profile
             student.mobileNumber = mobileNumber;
             student.studyingIn = studyingIn;
+            student.name=name;
             student.city = city;
-            if(gender) student.gender = gender;
-            if(dob) student.dob = parsedDob;
             student.passedIn = passedIn || student.passedIn;
             if (image) student.image = image;
 
@@ -75,8 +62,6 @@ export const addOrUpdateStudent = async (req, res) => {
                 mobileNumber,
                 studyingIn,
                 city,
-                gender,
-                dob: parsedDob,
                 image,
                 passedIn,
             });
@@ -119,7 +104,7 @@ export const saveCoursePreferences = async (req, res) => {
             }
             for (let stream of interestedStreams) {
                 if (!validStreams.includes(stream)) {
-                    return res.status(400).json({ message: `Invalid stream: ${stream}` });
+                    return res.status(400).json({message: `Invalid stream: ${stream}`});
                 }
             }
             student.interestedStreams = interestedStreams;

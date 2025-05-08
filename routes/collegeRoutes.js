@@ -12,12 +12,11 @@ import { addHostel, getHostelByCollege, updateHostel } from "../controllers/host
 import { addCampus, getCampusByCollege, updateCampus } from "../controllers/campusController.js";
 import { filterCollegesByStream } from "../controllers/filterByStream.js";
 import { filterCollegesByRanking } from "../controllers/filterByRanking.js";
-import { predictColleges } from "../controllers/collegePredictorController.js";
 import {search} from "../controllers/searchController.js";
 import{ addQuestion, getQuestionsByCollege } from '../controllers/QAController.js';
 import { reportIssue } from '../controllers/reportController.js';
 import { feedbackSubmit } from '../controllers/feedbackController.js';
-
+import { predictColleges } from "../controllers/collegePredictor.js";
 
 // User Authentication Controllers
 import {
@@ -106,6 +105,7 @@ router.post("/scholarships", scholarshipsValidate, scholarshipdetails);
 
 router.post('/report', reportIssue);
 router.post('/feedback', feedbackSubmit);
+router.post("/predict", predictColleges);
 
 
 export default router;
