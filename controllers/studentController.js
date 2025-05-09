@@ -1,4 +1,3 @@
-studentController.js
 import Student from "../models/studentModel.js";
 import mongoose from "mongoose";
 
