@@ -16,7 +16,8 @@ import {search} from "../controllers/searchController.js";
 import{ addQuestion, getQuestionsByCollege } from '../controllers/QAController.js';
 import { reportIssue } from '../controllers/reportController.js';
 import { feedbackSubmit } from '../controllers/feedbackController.js';
-import { predictColleges } from "../controllers/collegePredictor.js";
+
+import {predictColleges} from '../controllers/collegePredictor.js';
 
 // User Authentication Controllers
 import {
