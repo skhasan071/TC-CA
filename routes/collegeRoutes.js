@@ -16,8 +16,9 @@ import {search} from "../controllers/searchController.js";
 import{ addQuestion, getQuestionsByCollege } from '../controllers/QAController.js';
 import { reportIssue } from '../controllers/reportController.js';
 import { feedbackSubmit } from '../controllers/feedbackController.js';
-
-import {predictColleges} from '../controllers/collegePredictor.js';
+import { predictColleges } from "../controllers/collegePredictor.js";
+import { addOrUpdateEligibility, getEligibility } from "../controllers/eligibilityController.js";
+import { getCostDetails} from '../controllers/costController.js';
 
 // User Authentication Controllers
 import {
@@ -90,9 +91,6 @@ router.get("/filter-by-stream", filterCollegesByStream); // Filter by Stream
 router.get("/filter-by-ranking", filterCollegesByRanking); // Filter by Ranking
 router.get("/search", search);
 
-//predictor route
-router.post("/predict", predictColleges);
-
 
 // ✅ Authentication & User Routes
 router.post("/register", studentRegisterValidate, registerUser);
@@ -106,7 +104,10 @@ router.post("/scholarships", scholarshipsValidate, scholarshipdetails);
 
 router.post('/report', reportIssue);
 router.post('/feedback', feedbackSubmit);
-router.post("/predict", predictColleges);
 
+router.post("/predict", predictColleges);
+router.post("/eligibility", addOrUpdateEligibility);
+router.get("/eligibility/:collegeId", getEligibility);
+router.get('/:collegeId', getCostDetails);
 
 export default router;

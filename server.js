@@ -13,7 +13,8 @@ import { ScholarshipModel } from './models/userModel.js'; // Ensure correct path
 import questionRoutes from './routes/collegeRoutes.js';
 import reportRoutes from './routes/collegeRoutes.js';
 import feedbackRoutes from './routes/collegeRoutes.js';
-
+import eligibilityRoutes from "./routes/eligibility.js";
+import costDetailsRoutes from './routes/collegeRoutes.js';
 
 dotenv.config();
 connectDB();
@@ -31,6 +32,8 @@ app.use("/api/students", studentRoutes); // ✅ Use student routes
 app.use('/api', questionRoutes);
 app.use('/api', reportRoutes);
 app.use('/api', feedbackRoutes);
+app.use("/api", eligibilityRoutes);
+app.use('/api', costDetailsRoutes);
 
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
