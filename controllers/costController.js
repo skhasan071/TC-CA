@@ -11,7 +11,7 @@ export const getCostDetails = async (req, res) => {
     }
   
     try {
-      const costDetails = await Cost.findOne({ collegeId: collegeId.trim() });
+      const costDetails = await Cost.findOne({collegeId});
   
       if (!costDetails) {
         return res.status(404).json({ message: 'College details not found' });

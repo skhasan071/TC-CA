@@ -27,6 +27,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
 // ✅ Routes
+app.use('/api/auth/student', studentRoutes); 
 app.use("/api/colleges", collegeRoutes);
 app.use("/api/students", studentRoutes); // ✅ Use student routes
 app.use('/api', questionRoutes);
@@ -82,7 +83,7 @@ app.post('/send-otp', async (req, res) => {
   
     try {
       await Tclient.messages.create({
-        body: "Your OTP is ${otp}",
+        body: `Your OTP is ${otp}`,  // ✅ Correct - will insert the OTP value
         from: process.env.TWILIO_PHONE_NUMBER,
         to: phone,
       });
@@ -113,7 +114,6 @@ app.post('/verify-otp', (req, res) => {
   
     res.status(400).json({ success: false, message: 'Invalid OTP' });
 });
-
 // Blog Routes
 app.post('/api/blogs', async (req, res) => {
   const {
