@@ -108,6 +108,6 @@ router.post('/feedback', feedbackSubmit);
 router.post("/predict", predictColleges);
 router.post("/eligibility", addOrUpdateEligibility);
 router.get("/eligibility/:collegeId", getEligibility);
-router.get('/:collegeId', getCostDetails);
+router.get('/cost/:collegeId', getCostDetails);
 
 export default router;

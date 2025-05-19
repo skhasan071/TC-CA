@@ -4,7 +4,7 @@ import upload from "../middlewares/upload.js"; // ✅ Import Cloudinary upload m
 import { addToFavorites, getFavorites, removeFromFavorites } from "../controllers/favoritesController.js";
 import getCollegesByRanking from "../controllers/getPreferredCollByRanking.js";
 import { getPrivateCollegesByInterest } from "../controllers/filterPrivateColleges.js";
-import { registerStudent, loginStudent } from "../controllers/authStudent.js";
+import { registerStudent, loginStudent, sendOtp,verifyOtpAndResetPassword } from "../controllers/authStudent.js";
 import { studentRegisterValidate, studentLoginValidate } from "../middlewares/userValidation.js";
 import ensureAuthenticated from "../middlewares/auth.js";
 
@@ -36,6 +36,8 @@ router.post("/private-colleges", getPrivateCollegesByInterest);
 //student register login
 router.post("/student/register", studentRegisterValidate, registerStudent);
 router.post("/student/login", studentLoginValidate, loginStudent);
+router.post('/student/forgot-password/send-otp', sendOtp);
+router.post('/student/forgot-password/verify-otp', verifyOtpAndResetPassword);
 router.get("/verify-user/:token", ensureAuthenticated, verifyToken);
 
 export default router;
