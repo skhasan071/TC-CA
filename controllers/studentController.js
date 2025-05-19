@@ -19,13 +19,14 @@ const getUserFromToken = (req) => {
 
 // ✅ Add or Update Student Profile
 export const addOrUpdateStudent = async (req, res) => {
+
     try {
         const user = getUserFromToken(req);
         if (!user) {
             return res.status(403).json({ message: "Unauthorized. Please log in." });
         }
 
-        const { name, mobileNumber, studyingIn, city, passedIn } = req.body;
+        const { name, mobileNumber, studyingIn, city, passedIn, email } = req.body;
         let image = req.file ? req.file.path : null;
 
         // ✅ Validate required fields
@@ -33,10 +34,10 @@ export const addOrUpdateStudent = async (req, res) => {
             return res.status(400).json({ message: "All required fields must be provided." });
         }
 
-        const mobileRegex = '/^[6-9]\d{9}$/';
-        if (!mobileRegex.test(mobileNumber)) {
-            return res.status(400).json({ message: "Invalid mobile number format." });
-        }
+        // const mobileRegex = /^[6-9]\d{9}$/;
+        // if (!mobileRegex.test(mobileNumber)) {
+        //     return res.status(400).json({ message: "Invalid mobile number format." });
+        // }
 
 
         // ✅ Check if student profile exists for this user
@@ -46,6 +47,7 @@ export const addOrUpdateStudent = async (req, res) => {
             // ✅ Update existing student profile
             student.mobileNumber = mobileNumber;
             student.studyingIn = studyingIn;
+            student.email = email;
             student.name=name;
             student.city = city;
             student.passedIn = passedIn || student.passedIn;
@@ -63,6 +65,7 @@ export const addOrUpdateStudent = async (req, res) => {
                 city,
                 image,
                 passedIn,
+                email,
             });
 
             await student.save();
