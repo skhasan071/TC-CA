@@ -18,25 +18,17 @@ const studentSchema = new mongoose.Schema(
       type: String,
       required: false,
     },
-    dob: {
-      type: String,
-      required: false,
-    },
-    gender: {
-      type: String,
-      required: false,
-    },
     studyingIn: {
       type: String,
       required: false,
     },
     city: {
       type: String,
-      required: false,
+      required: true,
     },
-    passedIn: {
+    state: {
       type: String,
-      required: false,
+      required: true,
     },
     image: {
       type: String,
