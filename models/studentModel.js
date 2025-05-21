@@ -24,11 +24,9 @@ const studentSchema = new mongoose.Schema(
     },
     city: {
       type: String,
-      required: false,
     },
     state: {
       type: String,
-      required: false,
     },
     image: {
       type: String,
