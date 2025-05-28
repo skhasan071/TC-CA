@@ -1,4 +1,6 @@
 import Placement from "../models/Placement.js";
+import mongoose from "mongoose";
+import College from "../models/College.js";
 
 // ✅ Add Placement Data
 // ✅ Add Placement Data

@@ -18,7 +18,7 @@ import { reportIssue } from '../controllers/reportController.js';
 import { feedbackSubmit } from '../controllers/feedbackController.js';
 import { predictColleges } from "../controllers/collegePredictor.js";
 import { addOrUpdateEligibility, getEligibility } from "../controllers/eligibilityController.js";
-import { getCostDetails} from '../controllers/costController.js';
+import { getCostDetails, addCostDetails} from '../controllers/costController.js';
 
 // User Authentication Controllers
 import {
@@ -109,5 +109,7 @@ router.post("/predict", predictColleges);
 router.post("/eligibility", addOrUpdateEligibility);
 router.get("/eligibility/:collegeId", getEligibility);
 router.get('/cost/:collegeId', getCostDetails);
+router.post('/cost/add', addCostDetails);
+
 
 export default router;
