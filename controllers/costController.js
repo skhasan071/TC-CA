@@ -6,6 +6,7 @@ export const addCostDetails = async (req, res) => {
   try {
     const { collegeId, address, costOfLiving, nearbyPlaces } = req.body;
 
+    
     if (!collegeId || !address || !costOfLiving || !nearbyPlaces) {
       return res.status(400).json({ message: 'All fields are required (collegeId, address, costOfLiving, nearbyPlaces)' });
     }
@@ -60,3 +61,32 @@ export const getCostDetails = async (req, res) => {
       res.status(500).json({ message: 'Error fetching college details', error: error.message });
     }
   };
+  // ✅ Update Cost Details
+export const updateCostDetails = async (req, res) => {
+  try {
+    const { costId } = req.params;
+    const { collegeId, address, costOfLiving, nearbyPlaces } = req.body;
+
+    if (!collegeId || !address || !costOfLiving || !nearbyPlaces) {
+      return res.status(400).json({ message: 'All fields are required (collegeId, address, costOfLiving, nearbyPlaces)' });
+    }
+
+    const updatedCost = await Cost.findByIdAndUpdate(
+      costId,
+      { collegeId, address, costOfLiving, nearbyPlaces },
+      { new: true, runValidators: true }
+    );
+
+    if (!updatedCost) {
+      return res.status(404).json({ message: 'Cost details not found' });
+    }
+
+    res.status(200).json({
+      message: 'Cost details updated successfully',
+      data: updatedCost,
+    });
+  } catch (error) {
+    console.error('Error updating cost details:', error.message);
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+};

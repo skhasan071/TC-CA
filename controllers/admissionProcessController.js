@@ -2,8 +2,6 @@ import AdmissionProcess from "../models/admissionProcess.js";
 import mongoose from "mongoose";
 import College from "../models/College.js";
 
-
-
 // ✅ Add Admission Process
 export const addAdmissionProcess = async (req, res) => {
   try {
@@ -97,7 +95,6 @@ export const updateAdmissionProcess = async (req, res) => {
     const updatedAdmissionProcess = await AdmissionProcess.findByIdAndUpdate(
       admissionProcessId,
       {
-        collegeId,
         requiredExams,
         applicationProcess,
         startDate,
