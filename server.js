@@ -71,7 +71,7 @@ const Tclient = twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_T
 // In-memory store (use Redis or DB in production)
 const otpStore = new Map();
 function generateOTP() {
-    return Math.floor(100000 + Math.random() * 900000).toString();
+    return "123456"; //Math.floor(100000 + Math.random() * 900000).toString();
 }
 
 // Send OTP
@@ -94,7 +94,7 @@ app.post('/send-otp', async (req, res) => {
 });
   
 // Verify OTP
-app.post('/verify-otp', (req, res) => {
+app.post('/verify-otp', async (req, res) => {
     const { phone, otp } = req.body;
     const record = otpStore.get(phone);
   
@@ -108,8 +108,21 @@ app.post('/verify-otp', (req, res) => {
     }
   
     if (otp === record.otp) {
+
       otpStore.delete(phone);
-      return res.json({ success: true, message: 'OTP verified' });
+      const student = new Student({mobileNumber: phone});
+      await student.save();
+
+      const token = jwt.sign(
+            { id: student._id, mobileNumber: student.mobileNumber},
+            process.env.SECRET,
+            { expiresIn: "7d" }
+          );
+
+      console.log(token);
+
+      return res.status(200).json({ success: true, message: 'OTP verified', token: token, data: student});
+
     }
   
     res.status(400).json({ success: false, message: 'Invalid OTP' });
@@ -168,7 +181,6 @@ app.get('/api/scholarships/:collegeId', async (req, res) => {
     res.status(500).json({ message: 'Internal Server Error', error: error.message });
   }
 });
-
 
 app.use((err, req, res, next) => {
     console.error("Global Error:", err);

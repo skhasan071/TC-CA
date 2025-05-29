@@ -9,6 +9,7 @@ import {
   ScholarshipModel,
 } from "../models/userModel.js";
 import mongoose, { Mongoose } from "mongoose";
+
 //register user api
 export const registerUser = async (req, res) => {
   const userModel = new UserModel(req.body);
@@ -21,6 +22,7 @@ export const registerUser = async (req, res) => {
     return res.status(500).json({ message: "error" });
   }
 };
+
 //login user api
 export const loginUser = async (req, res) => {
   try {
@@ -262,5 +264,3 @@ export const scholarshipdetails = async (req, res) => {
     return res.status(500).json({ message: "Internal Server Error", error: error.message });
   }
 };
-
-

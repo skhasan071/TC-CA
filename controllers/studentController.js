@@ -19,24 +19,25 @@ const getUserFromToken = (req) => {
 
 // ✅ Add or Update Student Profile
 export const addOrUpdateStudent = async (req, res) => {
+
     try {
         const user = getUserFromToken(req);
         if (!user) {
             return res.status(403).json({ message: "Unauthorized. Please log in." });
         }
 
-        const { name, mobileNumber, studyingIn, city, passedIn } = req.body;
+        const { name, mobileNumber, studyingIn, city, state, email } = req.body;
         let image = req.file ? req.file.path : null;
 
         // ✅ Validate required fields
-        if (!mobileNumber || !studyingIn || !city || !passedIn|| !name ) {
+        if (!mobileNumber || !studyingIn || !city || !state|| !name ) {
             return res.status(400).json({ message: "All required fields must be provided." });
         }
 
-        const mobileRegex = '/^[6-9]\d{9}$/';
-        if (!mobileRegex.test(mobileNumber)) {
-            return res.status(400).json({ message: "Invalid mobile number format." });
-        }
+        // const mobileRegex = /^[6-9]\d{9}$/;
+        // if (!mobileRegex.test(mobileNumber)) {
+        //     return res.status(400).json({ message: "Invalid mobile number format." });
+        // }
 
 
         // ✅ Check if student profile exists for this user
@@ -46,13 +47,15 @@ export const addOrUpdateStudent = async (req, res) => {
             // ✅ Update existing student profile
             student.mobileNumber = mobileNumber;
             student.studyingIn = studyingIn;
+            student.email = email;
             student.name=name;
             student.city = city;
-            student.passedIn = passedIn || student.passedIn;
+            student.state = state || student.state;
             if (image) student.image = image;
 
             await student.save();
             return res.status(200).json({ message: "Profile updated successfully", student });
+
         } else {
             // ✅ Create new student profile
             student = new Student({
@@ -62,7 +65,8 @@ export const addOrUpdateStudent = async (req, res) => {
                 studyingIn,
                 city,
                 image,
-                passedIn,
+                state,
+                email,
             });
 
             await student.save();
@@ -90,7 +94,7 @@ export const saveCoursePreferences = async (req, res) => {
         }
 
         // ✅ Predefined options
-        const validStreams = ["Engineering", "Management", "Arts", "Science", "Law", "Medicine", "Design", "Humanities"];
+        const validStreams = ["Engineering", "Management", "Arts", "Science", "Law", "Medical", "Design", "Humanities"];
         const validCourses = ["BBA/MBA(General)", "MBA(Finance)", "MBA(Marketing)", "MBA(HR)", "MBA(Operations)", "PGDM", "Entrepreneurship & Startups", "Business Analytics"];
         const validCourseLevels = ["UG", "PG", "Diploma(certification)"];
         const validModes = ["Online", "Full-time", "Part-time", "Distance learning"];

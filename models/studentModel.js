@@ -4,12 +4,11 @@ const studentSchema = new mongoose.Schema(
   {
     name: {
       type: String,
-      required: true,
     },
     email: {
       type: String,
-      required: true,
       unique: true,
+      sparse: true
     },
     password: {
       type: String,
@@ -19,25 +18,15 @@ const studentSchema = new mongoose.Schema(
       type: String,
       required: false,
     },
-    dob: {
-      type: String,
-      required: false,
-    },
-    gender: {
-      type: String,
-      required: false,
-    },
     studyingIn: {
       type: String,
       required: false,
     },
     city: {
       type: String,
-      required: false,
     },
-    passedIn: {
+    state: {
       type: String,
-      required: false,
     },
     image: {
       type: String,
