@@ -29,6 +29,8 @@ import {
   getReviews,
   cutoffdetails,
   scholarshipdetails,
+  getScholarshipByCollegeId,
+   updateScholarships
 } from "../controllers/index.js";
 
 // Validation Middlewares
@@ -40,6 +42,7 @@ import {
   reviewsValidate,
   cutoffsValidate,
   scholarshipsValidate,
+  
 } from "../middlewares/userValidation.js";
 
 const router = express.Router();
@@ -101,6 +104,10 @@ router.post("/reviews", reviewsValidate, reviewdetails);
 router.get("/reviews/getAll/:uid", getReviews);
 router.post("/cutoffs", cutoffsValidate, cutoffdetails);
 router.post("/scholarships", scholarshipsValidate, scholarshipdetails);
+router.get("/scholarships/:collegeId", getScholarshipByCollegeId);
+router.put("/scholarships/update/:collegeId", updateScholarships);
+
+
 
 router.post('/report', reportIssue);
 router.post('/feedback', feedbackSubmit);

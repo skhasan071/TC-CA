@@ -94,17 +94,14 @@ export const registerCollege = async (req, res) => {
     return res.status(500).json({ message: "error", error: err.message });
   }
 };
-
 export const loginCollege = async (req, res) => {
   try {
     const college = await CollegeAuthModel.findOne({
-      collegeemail: req.body.collegeemail,
+      collegeemail: req.body.collegeemail
     });
 
     if (!college) {
-      return res
-        .status(401)
-        .json({ message: "Auth failed, Invalid username/password" });
+      return res.status(401).json({ message: "Auth failed, Invalid username/password" });
     }
 
     if (!req.body.collegepassword) {
@@ -117,9 +114,7 @@ export const loginCollege = async (req, res) => {
     );
 
     if (!isPassEqual) {
-      return res
-        .status(401)
-        .json({ message: "Auth failed, Invalid username/password" });
+      return res.status(401).json({ message: "Auth failed, Invalid username/password" });
     }
 
     const tokenObject = {
@@ -133,10 +128,9 @@ export const loginCollege = async (req, res) => {
     });
 
     return res.status(200).json({ jwtToken, tokenObject });
+
   } catch (err) {
-    return res
-      .status(500)
-      .json({ message: "Internal Server Error", error: err.message });
+    return res.status(500).json({ message: "Internal Server Error", error: err.message });
   }
 };
 
@@ -262,5 +256,55 @@ export const scholarshipdetails = async (req, res) => {
     });
   } catch (error) {
     return res.status(500).json({ message: "Internal Server Error", error: error.message });
+  }
+};
+export const getScholarshipByCollegeId = async (req, res) => {
+  try {
+    const { collegeId } = req.params;
+
+    const scholarships = await ScholarshipModel.findOne({ collegeId });
+
+    if (!scholarships) {
+      return res.status(404).json({ message: 'Scholarships not found for this college' });
+    }
+
+    res.status(200).json(scholarships);
+  } catch (error) {
+    console.error('Error fetching scholarships:', error.message);
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+};
+export const updateScholarships = async (req, res) => {
+  try {
+    const { collegeId } = req.params;
+    const { scholarships } = req.body;
+
+    if (!Array.isArray(scholarships) || scholarships.length === 0) {
+      return res.status(400).json({ message: "scholarships must be a non-empty array" });
+    }
+
+    // Check for required fields in each scholarship
+    const missingFields = scholarships.find(
+      s => !s.ScholarshipName || !s.ScholarshipMoney || !s.ScholarshipDescription
+    );
+
+    if (missingFields) {
+      return res.status(400).json({ message: "Each scholarship must have ScholarshipName, ScholarshipMoney, and ScholarshipDescription" });
+    }
+
+    // Update or create the scholarship document
+    const updatedScholarship = await ScholarshipModel.findOneAndUpdate(
+      { collegeId },
+      { scholarships },
+      { new: true, upsert: true }
+    );
+
+    res.status(200).json({
+      message: 'Scholarships updated successfully',
+      data: updatedScholarship,
+    });
+  } catch (error) {
+    console.error('Error updating scholarships:', error.message);
+    res.status(500).json({ message: 'Server error', error: error.message });
   }
 };

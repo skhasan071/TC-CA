@@ -51,6 +51,14 @@ const PlacementSchema = new mongoose.Schema(
       type: String, // ✅ New field: List of companies that visited
       required: true
     },
+     branchWisePlacement: [
+      {
+         _id: false, 
+        branch: { type: String, required: true },
+        highestPackage: { type: String, required: true },
+        averagePackage: { type: String, required: true }
+      }
+    ]
   },
   { timestamps: true }
 );
