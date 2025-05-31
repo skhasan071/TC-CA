@@ -182,3 +182,25 @@ export const filterColleges = async (req, res) => {
     res.status(500).json({ message: "Server error", error: error.message });
   }
 };
+
+// ✅ Get College Info by ID
+export const getCollegeById = async (req, res) => {
+  try {
+    const { collegeId } = req.params;
+
+    if (!collegeId) {
+      return res.status(400).json({ message: "collegeId is required in params" });
+    }
+
+    const college = await College.findById(collegeId);
+
+    if (!college) {
+      return res.status(404).json({ message: "College not found" });
+    }
+
+    res.status(200).json(college);
+  } catch (error) {
+    console.error("Error fetching college info:", error);
+    res.status(500).json({ message: "Server Error", error: error.message });
+  }
+};

@@ -1,9 +1,8 @@
 import express from "express";
 import upload from "../middlewares/upload.js";
 import validateCollege from "../middlewares/validateCollege.js";
-
 // Controllers
-import { addColleges, getColleges, updateCollege, filterColleges } from "../controllers/collegeController.js";
+import { addColleges, getColleges, updateCollege, filterColleges,getCollegeById } from "../controllers/collegeController.js";
 import { addCourse, getCoursesByCollege, updateCourse } from "../controllers/courseController.js";
 import { addFaculty, getFacultyByCollege, updateFaculty } from "../controllers/facultyController.js";
 import { addPlacementData, getPlacementByCollege, updatePlacement } from "../controllers/placementController.js";
@@ -18,7 +17,7 @@ import { reportIssue } from '../controllers/reportController.js';
 import { feedbackSubmit } from '../controllers/feedbackController.js';
 import { predictColleges } from "../controllers/collegePredictor.js";
 import { addOrUpdateEligibility, getEligibility } from "../controllers/eligibilityController.js";
-import { getCostDetails} from '../controllers/costController.js';
+import { getCostDetails, addCostDetails, updateCostDetails} from '../controllers/costController.js';
 
 // User Authentication Controllers
 import {
@@ -30,6 +29,8 @@ import {
   getReviews,
   cutoffdetails,
   scholarshipdetails,
+  getScholarshipByCollegeId,
+   updateScholarships
 } from "../controllers/index.js";
 
 // Validation Middlewares
@@ -41,6 +42,7 @@ import {
   reviewsValidate,
   cutoffsValidate,
   scholarshipsValidate,
+  
 } from "../middlewares/userValidation.js";
 
 const router = express.Router();
@@ -49,6 +51,7 @@ const router = express.Router();
 router.post("/add", upload.fields([{ name: "image" }, { name: "brochure" }]), validateCollege, addColleges);
 router.get("/all", getColleges);
 router.put("/update/:collegeId", updateCollege);
+router.get("/college/:collegeId", getCollegeById);
 
 //filter
 router.post("/filter", filterColleges);
@@ -101,6 +104,10 @@ router.post("/reviews", reviewsValidate, reviewdetails);
 router.get("/reviews/getAll/:uid", getReviews);
 router.post("/cutoffs", cutoffsValidate, cutoffdetails);
 router.post("/scholarships", scholarshipsValidate, scholarshipdetails);
+router.get("/scholarships/:collegeId", getScholarshipByCollegeId);
+router.put("/scholarships/update/:collegeId", updateScholarships);
+
+
 
 router.post('/report', reportIssue);
 router.post('/feedback', feedbackSubmit);
@@ -109,5 +116,8 @@ router.post("/predict", predictColleges);
 router.post("/eligibility", addOrUpdateEligibility);
 router.get("/eligibility/:collegeId", getEligibility);
 router.get('/cost/:collegeId', getCostDetails);
+router.put("/cost/update/:costId", updateCostDetails);
+router.post('/cost/add', addCostDetails);
+
 
 export default router;

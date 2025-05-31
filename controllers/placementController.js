@@ -1,7 +1,6 @@
 import Placement from "../models/Placement.js";
 
 // ✅ Add Placement Data
-// ✅ Add Placement Data
 export const addPlacementData = async (req, res) => {
   try {
     const { collegeId, numberOfCompanyVisited, studentsPlaced, companiesVisited,highestPackage,averagePackage,placementRate,recentPlacements,fiveToTen,tenToFifteen,fifteenToTwenty,aboveTwenty,branchWisePlacement } =

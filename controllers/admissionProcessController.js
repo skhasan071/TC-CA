@@ -1,4 +1,6 @@
 import AdmissionProcess from "../models/admissionProcess.js";
+import mongoose from "mongoose";
+import College from "../models/College.js";
 
 // ✅ Add Admission Process
 export const addAdmissionProcess = async (req, res) => {
@@ -12,17 +14,33 @@ export const addAdmissionProcess = async (req, res) => {
       documentsRequired,
     } = req.body;
 
+    // ✅ Log incoming data for debug
+    console.log("Received Admission Data:", req.body);
+
+    // ✅ Check if all fields are present
     if (
       !collegeId ||
       !requiredExams ||
       !applicationProcess ||
       !startDate ||
       !endDate ||
-      !documentsRequired 
+      !documentsRequired
     ) {
       return res.status(400).json({ message: "All fields are required" });
     }
 
+    // ✅ Validate CollegeId format
+    if (!mongoose.Types.ObjectId.isValid(collegeId)) {
+      return res.status(400).json({ message: "Invalid College ID format" });
+    }
+
+    // ✅ Check if College exists (optional, but recommended)
+    const collegeExists = await College.findById(collegeId);
+    if (!collegeExists) {
+      return res.status(404).json({ message: "College not found" });
+    }
+
+    // ✅ Create new Admission Process
     const admissionProcess = new AdmissionProcess({
       collegeId,
       requiredExams,
@@ -39,6 +57,7 @@ export const addAdmissionProcess = async (req, res) => {
       admissionProcess,
     });
   } catch (error) {
+    console.error("Error in addAdmissionProcess:", error);
     res.status(500).json({ message: "Server Error", error: error.message });
   }
 };
@@ -71,11 +90,11 @@ export const updateAdmissionProcess = async (req, res) => {
       endDate,
       documentsRequired,
     } = req.body;
+ 
 
     const updatedAdmissionProcess = await AdmissionProcess.findByIdAndUpdate(
       admissionProcessId,
       {
-        collegeId,
         requiredExams,
         applicationProcess,
         startDate,
