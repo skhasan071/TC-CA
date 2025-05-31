@@ -107,7 +107,6 @@ app.post('/verify-otp', async (req, res) => {
       return res.status(400).json({ success: false, message: 'OTP expired Nothing' });
     }
 
-
     if (otp === record.otp) {
 
       otpStore.delete(phone);

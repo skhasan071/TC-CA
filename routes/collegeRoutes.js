@@ -46,7 +46,6 @@ import {
 } from "../middlewares/userValidation.js";
 
 const router = express.Router();
-
 // ✅ College Routes
 router.post("/add", upload.fields([{ name: "image" }, { name: "brochure" }]), validateCollege, addColleges);
 router.get("/all", getColleges);

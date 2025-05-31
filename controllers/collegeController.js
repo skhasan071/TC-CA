@@ -12,8 +12,6 @@ export const addColleges = async (req, res) => {
       return acc;
     }, {});
 
-    console.log(body._id);
-
     // ✅ Extract fields from normalized body
     const name = body.name;
     const city = body.city;
