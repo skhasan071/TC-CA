@@ -48,7 +48,7 @@ export const addColleges = async (req, res) => {
 
     // ✅ Create new college entry with type
     const newCollege = new College({
-      _id: mongoose.Types.ObjectId(body._id),
+      _id: new mongoose.Types.ObjectId(body._id),
       name,
       city,
       state,
