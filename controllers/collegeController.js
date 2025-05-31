@@ -5,14 +5,14 @@ import Course from "../models/course.js";
 // ✅ Add College with Type (Private/Government)
 export const addColleges = async (req, res) => {
   try {
-    console.log("Received Body:", req.body);
-    console.log("Received Files:", req.files);
 
     // ✅ Normalize keys in req.body
     const body = Object.keys(req.body).reduce((acc, key) => {
       acc[key.toLowerCase()] = req.body[key]; // Convert all keys to lowercase
       return acc;
     }, {});
+
+    console.log(body._id);
 
     // ✅ Extract fields from normalized body
     const name = body.name;
@@ -50,6 +50,7 @@ export const addColleges = async (req, res) => {
 
     // ✅ Create new college entry with type
     const newCollege = new College({
+      _id: mongoose.Types.ObjectId(body._id),
       name,
       city,
       state,
@@ -203,4 +204,4 @@ export const getCollegeById = async (req, res) => {
     console.error("Error fetching college info:", error);
     res.status(500).json({ message: "Server Error", error: error.message });
   }
-};
+};  
