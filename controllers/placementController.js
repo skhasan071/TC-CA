@@ -4,13 +4,14 @@ import Placement from "../models/Placement.js";
 // ✅ Add Placement Data
 export const addPlacementData = async (req, res) => {
   try {
-    const { collegeId, numberOfCompanyVisited, studentsPlaced, companiesVisited,highestPackage,averagePackage,placementRate,recentPlacements,fiveToTen,tenToFifteen,fifteenToTwenty,aboveTwenty } =
+    const { collegeId, numberOfCompanyVisited, studentsPlaced, companiesVisited,highestPackage,averagePackage,placementRate,recentPlacements,fiveToTen,tenToFifteen,fifteenToTwenty,aboveTwenty,branchWisePlacement } =
       req.body;
 
-    if (!collegeId || !numberOfCompanyVisited || !studentsPlaced || !companiesVisited || !highestPackage || !averagePackage || !placementRate || !recentPlacements || !fiveToTen || !tenToFifteen || !fifteenToTwenty || !aboveTwenty) {
+    if (!collegeId || !numberOfCompanyVisited || !studentsPlaced || !companiesVisited || !highestPackage || !averagePackage || !placementRate || !recentPlacements || !fiveToTen || !tenToFifteen || !fifteenToTwenty || !aboveTwenty ||
+    !branchWisePlacement) {
       return res.status(400).json({
         message:
-          "All fields (collegeId,numberOfCompanyVisited, studentsPlaced, companiesVisited,highestPackage,averagePackage,placementRate,recentPlacements,fiveToTen,tenToFifteen,fifteenToTwenty,aboveTwenty) are required",
+          "All fields (collegeId,numberOfCompanyVisited, studentsPlaced, companiesVisited,highestPackage,averagePackage,placementRate,recentPlacements,fiveToTen,tenToFifteen,fifteenToTwenty,aboveTwenty,branchWisePlacement) are required",
       });
     }
 
@@ -26,7 +27,8 @@ export const addPlacementData = async (req, res) => {
       fiveToTen,
       tenToFifteen,
       fifteenToTwenty,
-      aboveTwenty
+      aboveTwenty,
+      branchWisePlacement
     });
 
     await placement.save();
@@ -42,7 +44,7 @@ export const addPlacementData = async (req, res) => {
 
 // ✅ Get Placement Data by College
 export const getPlacementByCollege = async (req, res) => {
-  const { collegeId } = req.params;
+ const collegeId = req.params.collegeId.trim();
   try {
     const placements = await Placement.find({ collegeId });
 
@@ -62,7 +64,7 @@ export const getPlacementByCollege = async (req, res) => {
 export const updatePlacement = async (req, res) => {
   try {
     const { placementId } = req.params;
-    const { numberOfCompanyVisited, studentsPlaced, companiesVisited,highestPackage,averagePackage,placementRate,recentPlacements,fiveToTen,tenToFifteen,fifteenToTwenty,aboveTwenty } = req.body;
+    const { numberOfCompanyVisited, studentsPlaced, companiesVisited,highestPackage,averagePackage,placementRate,recentPlacements,fiveToTen,tenToFifteen,fifteenToTwenty,aboveTwenty,branchWisePlacement  } = req.body;
 
     const updatedPlacement = await Placement.findByIdAndUpdate(
       placementId,
@@ -77,7 +79,8 @@ export const updatePlacement = async (req, res) => {
         fiveToTen,
         tenToFifteen,
         fifteenToTwenty,
-        aboveTwenty
+        aboveTwenty,
+        branchWisePlacement 
       },
       { new: true, runValidators: true }
     );
