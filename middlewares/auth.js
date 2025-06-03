@@ -15,23 +15,9 @@ const ensureAuthenticated = async (req, res, next) => {
     next();
   } catch (err) {
 
-    try {
-      const response = await fetch(`https://www.googleapis.com/oauth2/v3/tokeninfo?access_token=${token}`);
-      const data = await response.json();
-
-      if (data.error) {
-        throw new Error("Invalid Access Token");
-      }
-
-      req.authenticatedUser = data;
-      next();
-
-    } catch (error) {
-
-      console.error("Error verifying access token:", error);
+    console.error("Error verifying access token:", err);
       return res.status(403).json({ message: "Token is not valid or it's expired" });
-
-    }
+      
   }
 };
 

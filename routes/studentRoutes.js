@@ -36,8 +36,8 @@ router.post("/private-colleges", getPrivateCollegesByInterest);
 //student register login
 router.post("/student/register", studentRegisterValidate, registerStudent);
 router.post("/student/login", studentLoginValidate, loginStudent);
-router.post('/student/forgot-password/send-otp', sendOtp);
-router.post('/student/forgot-password/verify-otp', verifyOtpAndResetPassword);
+router.post('/forgot-password/send-otp', sendOtp);
+router.post('/forgot-password/verify-otp', verifyOtpAndResetPassword);
 router.get("/verify-user/:token", ensureAuthenticated, verifyToken);
 
 export default router;
