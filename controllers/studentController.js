@@ -79,6 +79,7 @@ export const addOrUpdateStudent = async (req, res) => {
 
 // ✅ Save Course Preferences for a Student
 export const saveCoursePreferences = async (req, res) => {
+    
     try {
         const user = getUserFromToken(req);
         if (!user) {
@@ -95,7 +96,6 @@ export const saveCoursePreferences = async (req, res) => {
 
         // ✅ Predefined options
         const validStreams = ["Engineering", "Management", "Arts", "Science", "Law", "Medical", "Design", "Humanities"];
-        const validCourses = ["BBA/MBA(General)", "MBA(Finance)", "MBA(Marketing)", "MBA(HR)", "MBA(Operations)", "PGDM", "Entrepreneurship & Startups", "Business Analytics"];
         const validCourseLevels = ["UG", "PG", "Diploma(certification)"];
         const validModes = ["Online", "Full-time", "Part-time", "Distance learning"];
         const validYears = ["2025", "2026"];
@@ -117,11 +117,6 @@ export const saveCoursePreferences = async (req, res) => {
         if (coursesInterested) {
             if (!Array.isArray(coursesInterested)) {
                 return res.status(400).json({ message: "coursesInterested should be an array." });
-            }
-            for (let course of coursesInterested) {
-                if (!validCourses.includes(course)) {
-                    return res.status(400).json({ message: `Invalid course: ${course}` });
-                }
             }
             student.coursesInterested = coursesInterested;
         }

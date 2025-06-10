@@ -191,6 +191,12 @@ export const getCollegeById = async (req, res) => {
       return res.status(400).json({ message: "collegeId is required in params" });
     }
 
+    // ✅ Validate ObjectId before querying
+    if (!mongoose.Types.ObjectId.isValid(collegeId)) {
+      console.log(collegeId);
+      return res.status(400).json({ message: "Invalid collegeId format" });
+    }
+
     const college = await College.findById(collegeId);
 
     if (!college) {

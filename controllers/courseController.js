@@ -34,7 +34,7 @@ export const addCourse = async (req, res) => {
                 return res.status(400).json({ message: "Missing required fields in one of the courses." });
             }
 
-            if (!["Rank", "Percentile"].includes(rankType)) {
+            if (!["Rank", "Percentile", "Percentage"].includes(rankType)) {
                 return res.status(400).json({ message: `Invalid rankType in one of the courses. Must be 'Rank' or 'Percentile'.` });
             }
 
@@ -98,7 +98,7 @@ export const updateCourse = async (req, res) => {
         const { courseId } = req.params;
         const { courseName, duration, fees, examType, category, rankType, maxRankOrPercentile } = req.body;
 
-        if (rankType && !["Rank", "Percentile"].includes(rankType)) {
+        if (rankType && !["Rank", "Percentile", "Percentage"].includes(rankType)) {
             return res.status(400).json({ message: "Invalid rankType. Must be 'Rank' or 'Percentile'." });
         }
 

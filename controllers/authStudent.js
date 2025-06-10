@@ -62,9 +62,11 @@ export const sendOtp = async (req, res) => {
 
     res.status(200).json({ message: "OTP sent successfully" });
   } catch (error) {
+    console.log(error);
     res.status(500).json({ message: "Server error", error: error.message });
   }
 };
+
 export const verifyOtpAndResetPassword = async (req, res) => {
   try {
     const { email, otp, newPassword } = req.body;

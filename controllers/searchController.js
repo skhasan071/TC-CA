@@ -3,16 +3,19 @@ import College from "../models/College.js";
 export const search = async (req, res) => {
   
   try {
-    let { search, stream, country, state } = req.query;
+    let { search, stream, cities, state } = req.query;
 
     if (!search || search.trim() === "") {
       return res.status(400).json({ message: "Search text (college name) is required." });
     }
 
-    const streamArray = stream ? (Array.isArray(stream) ? stream : stream.split(",")) : [];
-    const countryArray = country ? (Array.isArray(country) ? country : country.split(",")) : [];
-    const stateArray = state ? (Array.isArray(state) ? state : state.split(",")) : [];
+    console.log(cities);
 
+    const streamArray = stream ? (Array.isArray(stream) ? stream : stream.split(",")) : [];
+    const stateArray = state ? (Array.isArray(state) ? state : state.split(",")) : [];
+    const cityArray = cities ? (Array.isArray(cities) ? cities : cities.split(",")) : [];
+
+    console.log(cityArray);
     // Validate streams if provided
     const validStreams = ['Engineering', 'Management', 'Arts', 'Science', 'Law', 'Medical', 'Design', 'Humanities'];
     const invalidStreams = streamArray.filter(s => !validStreams.includes(s));
@@ -28,7 +31,7 @@ export const search = async (req, res) => {
     };
 
     if (streamArray.length > 0) query.stream = { $in: streamArray };
-    if (countryArray.length > 0) query.country = { $in: countryArray };
+    if (cityArray.length > 0) query.city = { $in: cityArray };
     if (stateArray.length > 0) query.state = { $in: stateArray };
 
     const colleges = await College.find(query);

@@ -8,7 +8,7 @@ const CourseSchema = new mongoose.Schema(
         fees: { type: Number, required: true },
         examType: { type: String, required: true },
         category: { type: String, required: true },
-        rankType: { type: String, enum: ["Rank", "Percentile"], required: true },
+        rankType: { type: String, enum: ["Rank", "Percentile", 'Percentage'], required: true },
         maxRankOrPercentile: { type: Number, required: true }
     },
     { timestamps: true }
