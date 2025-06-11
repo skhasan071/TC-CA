@@ -19,6 +19,8 @@ import { predictColleges } from "../controllers/collegePredictor.js";
 import { addOrUpdateEligibility, getEligibility } from "../controllers/eligibilityController.js";
 import { getCostDetails, addCostDetails, updateCostDetails} from '../controllers/costController.js';
 
+import { createBlog, getAllBlogs } from '../controllers/blogsController.js';
+
 // User Authentication Controllers
 import {
   registerUser,
@@ -57,7 +59,7 @@ router.get("/college/:collegeId", getCollegeById);
 router.post("/filter", filterColleges);
 
 router.get('/questions/:collegeId', getQuestionsByCollege);
-router.post('/add-question', addQuestion);
+router.post('/add-question',addQuestion);
 
 // ✅ Courses & Fees Routes
 router.post("/courses/add", addCourse);
@@ -118,6 +120,8 @@ router.get("/eligibility/:collegeId", getEligibility);
 router.get('/cost/:collegeId', getCostDetails);
 router.put("/cost/update/:costId", updateCostDetails);
 router.post('/cost/add', addCostDetails);
-
+//blogs
+router.post('/add/Blogs', createBlog);
+router.get('/get/Blogs', getAllBlogs);
 
 export default router;

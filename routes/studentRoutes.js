@@ -7,6 +7,7 @@ import { getPrivateCollegesByInterest } from "../controllers/filterPrivateColleg
 import { registerStudent, loginStudent, sendOtp,verifyOtpAndResetPassword } from "../controllers/authStudent.js";
 import { studentRegisterValidate, studentLoginValidate } from "../middlewares/userValidation.js";
 import ensureAuthenticated from "../middlewares/auth.js";
+import { sendOTP, verifyOTP } from '../controllers/otpController.js';
 
 
 const router = express.Router();
@@ -40,4 +41,8 @@ router.post('/forgot-password/send-otp', sendOtp);
 router.post('/forgot-password/verify-otp', verifyOtpAndResetPassword);
 router.get("/verify-user/:token", ensureAuthenticated, verifyToken);
 
+// Route for sending OTP
+router.post('/send-otp', sendOTP);
+// Route for verifying OTP
+router.post('/verify-otp', verifyOTP);
 export default router;
