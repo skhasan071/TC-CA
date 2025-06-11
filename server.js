@@ -30,117 +30,12 @@ app.use(cors());
 app.use('/api/auth/student', studentRoutes); 
 app.use("/api/colleges", collegeRoutes);
 app.use("/api/students", studentRoutes); // ✅ Use student routes
-app.use('/api', questionRoutes);
-app.use('/api', reportRoutes);
-app.use('/api', feedbackRoutes);
-app.use("/api", eligibilityRoutes);
-app.use('/api', costDetailsRoutes);
+
+
 
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
-
-
-const Tclient = twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
-
-// In-memory store (use Redis or DB in production)
-const otpStore = new Map();
-function generateOTP() {
-    return "123456"; //Math.floor(100000 + Math.random() * 900000).toString();
-}
-
-// Send OTP
-app.post('/send-otp', async (req, res) => {
-    const { phone } = req.body;
-    const otp = generateOTP();
-  
-    otpStore.set(phone, { otp, expiresAt: Date.now() + 5 * 60 * 1000 }); // Expires in 5 mins
-  
-    try {
-      await Tclient.messages.create({
-        body: `Your OTP is ${otp}`,  // ✅ Correct - will insert the OTP value
-        from: process.env.TWILIO_PHONE_NUMBER,
-        to: phone,
-      });
-      res.json({ success: true, message: 'OTP sent' });
-    } catch (err) {
-      res.status(500).json({ success: false, message: err.message });
-    }
-});
-  
-// Verify OTP
-app.post('/verify-otp', async (req, res) => {
-    const { phone, otp } = req.body;
-    const record = otpStore.get(phone);
-  
-    if (!record) {
-      return res.status(400).json({ success: false, message: 'No OTP found for this number' });
-    }
-  
-    if (Date.now() > record.expiresAt) {
-      otpStore.delete(phone);
-      return res.status(400).json({ success: false, message: 'OTP expired Nothing' });
-    }
-
-    if (otp === record.otp) {
-
-      otpStore.delete(phone);
-      const student = new Student({mobileNumber: phone});
-      await student.save();
-
-      const token = jwt.sign(
-            { id: student._id, mobileNumber: student.mobileNumber},
-            process.env.SECRET,
-            { expiresIn: "7d" }
-          );
-
-      console.log(token);
-
-      return res.status(200).json({ success: true, message: 'OTP verified', token: token, data: student});
-
-    }
-  
-    res.status(400).json({ success: false, message: 'Invalid OTP' });
-});
-// Blog Routes
-app.post('/api/blogs', async (req, res) => {
-  const {
-    title,
-    category,
-    readingTime,
-    description,
-    content,
-    contributors,
-    image,
-  } = req.body;
-
-  try {
-    const newBlog = new Blog({
-      title,
-      category,
-      readingTime,
-      description,
-      content,
-      contributors,
-      image: image || 'assets/gmail-logo.jpg',  // Default image if not provided
-    });
-
-    await newBlog.save();
-    res.status(201).json({ message: 'Blog created successfully', blog: newBlog });
-  } catch (error) {
-    res.status(500).json({ message: 'Error creating blog', error });
-  }
-});
-
-// Fetch all blogs
-app.get('/api/blogs', async (req, res) => {
-  try {
-    const blogs = await Blog.find();  // Fetch all blogs from the database
-    res.status(200).json({ blogs });
-  } catch (error) {
-    res.status(500).json({ message: 'Error fetching blogs', error });
-  }
-});
 
 app.get('/api/scholarships/:collegeId', async (req, res) => {
   try {
