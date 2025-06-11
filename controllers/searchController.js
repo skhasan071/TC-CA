@@ -9,13 +9,10 @@ export const search = async (req, res) => {
       return res.status(400).json({ message: "Search text (college name) is required." });
     }
 
-    console.log(cities);
-
     const streamArray = stream ? (Array.isArray(stream) ? stream : stream.split(",")) : [];
     const stateArray = state ? (Array.isArray(state) ? state : state.split(",")) : [];
     const cityArray = cities ? (Array.isArray(cities) ? cities : cities.split(",")) : [];
 
-    console.log(cityArray);
     // Validate streams if provided
     const validStreams = ['Engineering', 'Management', 'Arts', 'Science', 'Law', 'Medical', 'Design', 'Humanities'];
     const invalidStreams = streamArray.filter(s => !validStreams.includes(s));
