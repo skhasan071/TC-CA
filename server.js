@@ -39,32 +39,7 @@ app.use('/api', costDetailsRoutes);
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
-// Endpoint to handle Google authentication
-app.post("/auth/google-auth", async (req, res) => {
-    const { email, name } = req.body;
 
-    try {
-
-      let user = await Student.findOne({ email });
-  
-      let redirect = true;
-      
-      if (user) {
-        // User exists, generate a JWT token
-        const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
-        return res.status(200).json({ message: "User authenticated", token, redirect });
-      } else {
-        // User doesn't exist, create the user
-        user = new Student({email, name});
-        await user.save();
-        const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
-        redirect = true; // Redirect if user is newly created
-        return res.status(200).json({ message: "User registered", token, redirect });
-      }
-    } catch (error) {
-      return res.status(400).json({ message: "Invalid Access Token", error: error.message });
-    }
-});
 
 const Tclient = twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
 
