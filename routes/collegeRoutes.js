@@ -32,6 +32,7 @@ import {
   cutoffdetails,
   scholarshipdetails,
   getScholarshipByCollegeId,
+  getScholarshipByCollegeIdForWeb,
    updateScholarships
 } from "../controllers/index.js";
 
@@ -107,9 +108,8 @@ router.get("/reviews/getAll/:uid", getReviews);
 router.post("/cutoffs", cutoffsValidate, cutoffdetails);
 router.post("/scholarships", scholarshipsValidate, scholarshipdetails);
 router.get("/scholarships/:collegeId", getScholarshipByCollegeId);
+router.get("/web/scholarships/:collegeId", getScholarshipByCollegeIdForWeb);
 router.put("/scholarships/update/:collegeId", updateScholarships);
-
-
 
 router.post('/report', reportIssue);
 router.post('/feedback', feedbackSubmit);

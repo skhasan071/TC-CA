@@ -96,11 +96,6 @@ export const verifyOtpAndResetPassword = async (req, res) => {
   }
 };
 
-
-
-// @desc    Login existing student
-// @route   POST /api/auth/student/login
-// @access  Public
 export const loginStudent = async (req, res) => {
   try {
     const { email, password } = req.body;
