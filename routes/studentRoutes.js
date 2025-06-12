@@ -8,6 +8,7 @@ import { registerStudent, loginStudent, sendOtp,verifyOtpAndResetPassword } from
 import { studentRegisterValidate, studentLoginValidate } from "../middlewares/userValidation.js";
 import ensureAuthenticated from "../middlewares/auth.js";
 import { sendOTP, verifyOTP } from '../controllers/otpController.js';
+import {googleAuth} from '../controllers/googleAuthController.js';
 
 
 const router = express.Router();
@@ -37,6 +38,7 @@ router.post("/private-colleges", getPrivateCollegesByInterest);
 //student register login
 router.post("/student/register", studentRegisterValidate, registerStudent);
 router.post("/student/login", studentLoginValidate, loginStudent);
+router.post("/student/google/login", googleAuth);
 router.post('/forgot-password/send-otp', sendOtp);
 router.post('/forgot-password/verify-otp', verifyOtpAndResetPassword);
 router.get("/verify-user/:token", ensureAuthenticated, verifyToken);
