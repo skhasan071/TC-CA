@@ -15,7 +15,7 @@ export const studentRegisterValidate = (req, res, next) => {
 export const studentLoginValidate = (req, res, next) => {
   const schema = Joi.object({
     email: Joi.string().email().required(),
-    password: Joi.string().min(4).alphanum().required(),
+    password: Joi.string().min(4).required(),
   });
   const { error } = schema.validate(req.body);
   if (error) return res.status(400).json({ message: "Bad Request", error });
