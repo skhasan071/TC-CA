@@ -22,7 +22,7 @@ export const googleAuth = async (req, res) => {
 
     let existingStudent = await Student.findOne({ email });
 
-    const firstTime = false;
+    let firstTime = false;
 
     if (!existingStudent) {
       existingStudent = new Student({
