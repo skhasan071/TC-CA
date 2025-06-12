@@ -22,6 +22,8 @@ export const googleAuth = async (req, res) => {
 
     let existingStudent = await Student.findOne({ email });
 
+    const firstTime = false;
+
     if (!existingStudent) {
       existingStudent = new Student({
         name,
@@ -29,6 +31,7 @@ export const googleAuth = async (req, res) => {
       })
 
       await existingStudent.save();
+      firstTime = true;
     }
 
     // Create token
@@ -39,6 +42,7 @@ export const googleAuth = async (req, res) => {
     );
 
     res.status(200).json({
+        firstTime: firstTime,
       message: "Login successful",
       data: existingStudent,
       token,
