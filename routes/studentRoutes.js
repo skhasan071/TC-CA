@@ -1,5 +1,5 @@
 import express from "express";
-import { addOrUpdateStudent, saveCoursePreferences, getStudentById, verifyToken } from "../controllers/studentController.js";
+import { addOrUpdateStudent, saveCoursePreferences, getStudentById, verifyToken,verifyDeleteUser,deleteStudent} from "../controllers/studentController.js"
 import upload from "../middlewares/upload.js"; // ✅ Import Cloudinary upload middleware
 import { addToFavorites, getFavorites, removeFromFavorites } from "../controllers/favoritesController.js";
 import getCollegesByRanking from "../controllers/getPreferredCollByRanking.js";
@@ -42,6 +42,12 @@ router.post("/student/google/login", googleAuth);
 router.post('/forgot-password/send-otp', sendOtp);
 router.post('/forgot-password/verify-otp', verifyOtpAndResetPassword);
 router.get("/verify-user/:token", ensureAuthenticated, verifyToken);
+
+// Route to verify if the student exists
+router.post("/student/verifyDeleteUser", verifyDeleteUser);
+
+// Route to delete the student account
+router.delete("/student/studentDelete", deleteStudent);
 
 // Route for sending OTP
 router.post('/send-otp', sendOTP);

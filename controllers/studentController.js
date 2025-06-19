@@ -195,3 +195,40 @@ export const verifyToken = async (req, res) => {
       return res.status(500).json({ message: "Internal server error" });
     }
 };
+
+export const verifyDeleteUser = async (req, res) => {
+  const { email } = req.body;
+
+  try {
+    // Find the student by email
+    const student = await Student.findOne({ email });
+    if (!student) {
+      return res.status(404).json({ message: "No such user found" });
+    }
+
+    // Successful login
+    res.status(200).json({ message: "User found" });
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
+
+export const deleteStudent = async (req, res) => {
+  const { email } = req.body;
+  console.log("Delete request received for email: ", email); // Debug log
+
+  try {
+    // Find the student by email
+    const student = await Student.findOne({ email });
+    if (!student) {
+      return res.status(404).json({ message: "Student not found" });
+    }
+
+    // Use deleteOne() instead of remove()
+    await Student.deleteOne({ email });  // Delete the student by email
+    res.status(200).json({ message: "Student profile deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting student: ", error.message); // Debug log
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
